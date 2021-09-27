@@ -1022,17 +1022,30 @@ H5SeuratToH5AD <- function(
   }
   # Add assay data
   assay.group <- source[['assays']][[assay]]
-  if (source$index()[[assay]]$slots[['scale.data']]) {
-    x.data <- 'scale.data'
-    raw.data <- 'data'
+  # if (source$index()[[assay]]$slots[['scale.data']]) {
+  #   x.data <- 'scale.data'
+  #   raw.data <- 'data'
+  # } else {
+  #   x.data <- 'data'
+  #   raw.data <- if (source$index()[[assay]]$slots[['counts']]) {
+  #     'counts'
+  #   } else {
+  #     NULL
+  #   }
+  # }
+
+# Just keep data and counts
+  x.data <- if (source$index()[[assay]]$slots[['data']]) {
+    'data'
   } else {
-    x.data <- 'data'
-    raw.data <- if (source$index()[[assay]]$slots[['counts']]) {
-      'counts'
-    } else {
-      NULL
-    }
+    NULL
   }
+  raw.data <- if (source$index()[[assay]]$slots[['counts']]) {
+    'counts'
+  } else {
+    NULL
+  }
+
   if (verbose) {
     message("Adding ", x.data, " from ", assay, " as X")
   }
